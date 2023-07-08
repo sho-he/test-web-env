@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build: ./docker/web
+    container_name: web
+    tty: true
+    volumes:
+      - ./app:/go/src/app
+    ports:
+      - "0.0.0.0:18080:80"
+    stdin_open: true
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_test}"
+    image: localstack/localstack:0.12.1
+    network_mode: bridge
+    ports:
+      - 127.0.0.1:14566:4566/tcp
+    environment:
+      - SERVICES=${SERVICES- }
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR}
+    volumes:
+      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+volumes:
+  go_path:

@@ -4,6 +4,8 @@ RUN apk update && apk add git
 RUN mkdir /go/src/app
 WORKDIR /go/src/app
 
+RUN go mod init
+
 RUN go mod tidy
 
 RUN go install github.com/cosmtrek/air@v1.27.3

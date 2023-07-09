@@ -7,6 +7,7 @@ services:
     tty: true
     volumes:
       - ./app:/go/src/app
+      - ./go.mod:/go/src/app/
     ports:
       - "0.0.0.0:18080:80"
     stdin_open: true
